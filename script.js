@@ -14,17 +14,33 @@ form.addEventListener("submit", function (e) {
     confirmPassword,
   ]);
 
-  let isFormValid = isRequiredValid;
+  let isUsernameValid = false;
+  let isEmailValid = false;
+  let isPasswordValid = false;
+  let isPasswordsMatch = false;
 
-  if (isRequiredValid) {
-    const isUsernameValid = checkLength(username, 3, 15);
-    const isEmailValid = checkEmail(email);
-    const isPasswordValid = checkLength(password, 6, 25);
-    const isPasswordsMatch = checkPasswordsMatch(password, confirmPassword);
-
-    isFormValid =
-      isUsernameValid && isEmailValid && isPasswordValid && isPasswordsMatch;
+  if (username.value.trim() !== "") {
+    isUsernameValid = checkLength(username, 3, 15);
   }
+
+  if (email.value.trim() !== "") {
+    isEmailValid = checkEmail(email);
+  }
+
+  if (password.value.trim() !== "") {
+    isPasswordValid = checkLength(password, 6, 25);
+  }
+
+  if (password.value.trim() !== "" && confirmPassword.value.trim() !== "") {
+    isPasswordsMatch = checkPasswordsMatch(password, confirmPassword);
+  }
+
+  const isFormValid =
+    isRequiredValid &&
+    isUsernameValid &&
+    isEmailValid &&
+    isPasswordValid &&
+    isPasswordsMatch;
 
   if (isFormValid) {
     alert("Registration successful!");
