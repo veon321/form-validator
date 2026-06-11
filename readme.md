@@ -10,8 +10,6 @@ This repository contains a dynamic, vanilla client-side form validation applicat
 
 ## Built with
 
-- **Semantic HTML5 markup:** Structured using robust architectural elements to establish an accessible DOM hierarchy, utilizing dedicated containers for modular form group management and semantic `<small>` elements for contextual error messaging.
-- **CSS Custom Properties (Variables):** Implemented an explicit design token system to maintain consistent active UI states. Color tokens manage error-critical (`#e74c3c`) and success-verified (`#2ecc71`) states across borders and validation indicators.
 - **Flexbox Layout:** Utilized as the primary positioning engine to guarantee optimal element centering, uniform structural distribution within individual component cards, and fluid alignment of error signals.
 - **Vanilla JavaScript (ES6+):** Engine behind the application's functional layer, employing modular abstraction principles to pass input element references into specialized validation routines.
 
