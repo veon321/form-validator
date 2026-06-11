@@ -27,7 +27,7 @@ form.addEventListener("submit", function (e) {
   }
 
   if (isFormValid) {
-    alert("Registration succesful!");
+    alert("Registration successful!");
     form.reset();
 
     document.querySelectorAll(".form-group").forEach((group) => {
@@ -41,6 +41,7 @@ function checkPasswordsMatch(input1, input2) {
     showError(input2, "Passwords do not match");
     return false;
   }
+  showSuccess(input2);
   return true;
 }
 
@@ -65,7 +66,7 @@ function checkLength(input, min, max) {
   } else if (input.value.length > max) {
     showError(
       input,
-      `${formatFieldName(input)} must be at least ${max} characters.`,
+      `${formatFieldName(input)} must be less than ${max} characters.`,
     );
     return false;
   } else {
@@ -89,6 +90,7 @@ function checkRequired(inputArray) {
 }
 
 function formatFieldName(input) {
+  if (input.id === "confirmPassword") return "Confirm password";
   return input.id.charAt(0).toUpperCase() + input.id.slice(1);
 }
 
