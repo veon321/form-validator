@@ -7,40 +7,14 @@ const confirmPassword = document.getElementById("confirmPassword");
 form.addEventListener("submit", function (e) {
   e.preventDefault();
 
-  const isRequiredValid = checkRequired([
-    username,
-    email,
-    password,
-    confirmPassword,
-  ]);
+  const validations = [
+    validateUsername(),
+    validateEmail(),
+    validatePassword(),
+    validateConfirmPassword(),
+  ];
 
-  let isUsernameValid = false;
-  let isEmailValid = false;
-  let isPasswordValid = false;
-  let isPasswordsMatch = false;
-
-  if (username.value.trim() !== "") {
-    isUsernameValid = checkLength(username, 3, 15);
-  }
-
-  if (email.value.trim() !== "") {
-    isEmailValid = checkEmail(email);
-  }
-
-  if (password.value.trim() !== "") {
-    isPasswordValid = checkLength(password, 6, 25);
-  }
-
-  if (password.value.trim() !== "" && confirmPassword.value.trim() !== "") {
-    isPasswordsMatch = checkPasswordsMatch(password, confirmPassword);
-  }
-
-  const isFormValid =
-    isRequiredValid &&
-    isUsernameValid &&
-    isEmailValid &&
-    isPasswordValid &&
-    isPasswordsMatch;
+  const isFormValid = validations.every((isValid) => isValid === true);
 
   if (isFormValid) {
     alert("Registration successful!");
@@ -52,6 +26,42 @@ form.addEventListener("submit", function (e) {
   }
 });
 
+function validateUsername() {
+  const value = username.value.trim();
+  if (value === "") {
+    showError(username, "Username is required");
+    return false;
+  }
+  return checkLength(username, 3, 15);
+}
+
+function validateEmail() {
+  const value = email.value.trim();
+  if (value === "") {
+    showError(email, "Email is required");
+    return false;
+  }
+  return checkEmail(email);
+}
+
+function validatePassword() {
+  const value = password.value.trim();
+  if (value === "") {
+    showError(password, "Password is required");
+    return false;
+  }
+  return checkLength(password, 6, 25);
+}
+
+function validateConfirmPassword() {
+  const value = confirmPassword.value.trim();
+  if (value === "") {
+    showError(confirmPassword, "Confirm password is required");
+    return false;
+  }
+  return checkPasswordsMatch(password, confirmPassword);
+}
+
 function checkPasswordsMatch(input1, input2) {
   if (input1.value !== input2.value) {
     showError(input2, "Passwords do not match");
@@ -61,25 +71,26 @@ function checkPasswordsMatch(input1, input2) {
   return true;
 }
 
-function checkEmail(email) {
+function checkEmail(input) {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (emailRegex.test(email.value.trim())) {
-    showSuccess(email);
+  if (emailRegex.test(input.value.trim())) {
+    showSuccess(input);
     return true;
   } else {
-    showError(email, "Email is not valid");
+    showError(input, "Email is not valid");
     return false;
   }
 }
 
 function checkLength(input, min, max) {
-  if (input.value.length < min) {
+  const length = input.value.trim().length;
+  if (length < min) {
     showError(
       input,
       `${formatFieldName(input)} must be at least ${min} characters.`,
     );
     return false;
-  } else if (input.value.length > max) {
+  } else if (length > max) {
     showError(
       input,
       `${formatFieldName(input)} must be less than ${max} characters.`,
@@ -89,20 +100,6 @@ function checkLength(input, min, max) {
     showSuccess(input);
     return true;
   }
-}
-
-function checkRequired(inputArray) {
-  let isValid = true;
-
-  inputArray.forEach((input) => {
-    if (input.value.trim() === "") {
-      showError(input, `${formatFieldName(input)} is required`);
-      isValid = false;
-    } else {
-      showSuccess(input);
-    }
-  });
-  return isValid;
 }
 
 function formatFieldName(input) {
