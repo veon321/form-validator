@@ -63,18 +63,22 @@ function validateEmpty(input, fieldName) {
   return true;
 }
 
-function checkUsername() {
-  if (!validateEmpty(username, "Username")) return false;
-
-  const value = username.value.trim();
-  if (value.length < 3 || value.length > 15) {
+function validateLength(input, min, max, fieldName) {
+  const value = input.value.trim();
+  if (value.length < min || value.length > max) {
     showMessage(
-      username,
-      "Username must be between 3 and 15 characters",
+      input,
+      `${fieldName} must be between ${min} and ${max} characters`,
       false,
     );
     return false;
   }
+  return true;
+}
+
+function checkUsername() {
+  if (!validateEmpty(username, "Username")) return false;
+  if (!validateLength(username, 3, 15, "Username")) return false;
 
   showMessage(username, "", true);
   return true;
@@ -95,19 +99,10 @@ function checkEmailField() {
 
 function checkPasswordField() {
   if (!validateEmpty(password, "Password")) return false;
-
-  const value = password.value.trim();
-  if (value.length < 6 || value.length > 25) {
-    showMessage(
-      password,
-      "Password must be between 6 and 25 characters",
-      false,
-    );
-    return false;
-  }
+  if (!validateLength(password, 6, 25, "Password")) return false;
 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-  if (!passwordRegex.test(value)) {
+  if (!passwordRegex.test(password.value.trim())) {
     showMessage(
       password,
       "Password must contain uppercase, lowercase and a number",
