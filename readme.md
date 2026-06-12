@@ -10,14 +10,14 @@ This repository contains a dynamic, vanilla client-side form validation applicat
 
 ## Built with
 
-- **Flexbox Layout:** Utilized as the primary positioning engine to guarantee optimal element centering, uniform structural distribution within individual component cards, and fluid alignment of error signals.
-- **Vanilla JavaScript (ES6+):** Engine behind the application's functional layer, employing modular abstraction principles to pass input element references into specialized validation routines.
+- **Flexbox Layout:** Utilized as the primary positioning engine to guarantee optimal element centering and fluid alignment of error signals.
+- **Vanilla JavaScript (ES6+):** Refactored to use modular abstraction, reducing repetition through centralized validation logic and unified state management.
 
 ## Features
 
-- **Strict Required-Field Enforcement:** Intercepts the default `submit` event context via programmatic event binding to evaluate individual string length parameters using `.trim()` sanitation, preventing whitespace injection bypasses.
-- **Dynamic Field-Name Formatting:** Features an internal parser to map raw DOM `id` attributes directly into capitalized, user-friendly communication strings (including explicit camelCase transformation for complex field scopes).
-- **RegEx Character Sequence Evaluation:** Implements an atomic regular expression architecture (`/^[^\s@]+@[^\s@]+\.[^\s@]+$/`) within an isolated utility layer to strictly validate syntax structures against RFC e-mail formatting guidelines.
-- **Boundary Length Constraints:** Evaluates textual inputs against custom, range-bound integer constraints (`min`/`max` parameters) to procedurally enforce minimum account-name safety thresholds and maximum buffer safety ceilings.
-- **Password Alignment Synchronizer:** Features a secondary-input verification pass that executes cross-field value comparison to dynamically match character tokens before triggering the application success state.
-- **Automated State Reset Strategy:** Upon successful global resolution of all active input validation states, the program executes native form resetting alongside systemic DOM tree cleanup to purge transient visual modifier classes.
+- **Strict Required-Field Enforcement:** Intercepts the default `submit` event context to evaluate inputs using `.trim()` sanitation, preventing whitespace injection.
+- **Unified Messaging System:** Replaced separate error/success functions with a single `showMessage` handler that dynamically toggles element states.
+- **RegEx Character Sequence Evaluation:** Strictly validates email syntax and enforces strict password complexity (uppercase, lowercase, and numbers).
+- **Boundary Length Constraints:** Evaluates textual inputs against custom range-bound constraints to ensure data integrity.
+- **Password Alignment Synchronizer:** Executes cross-field value comparison to dynamically match password and confirmation tokens.
+- **Automated State Reset Strategy:** Upon successful submission, the program executes a native form reset and purges all transient visual modifier classes.

@@ -4,184 +4,130 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const confirmPassword = document.getElementById("confirmPassword");
 
-if (!form || !username || !email || !password || !confirmPassword) {
+const elements = [form, username, email, password, confirmPassword];
+
+if (elements.includes(null)) {
   console.error("Brakuje wymaganych elementów formularza.");
 } else {
-  username.addEventListener("blur", validateUsername);
-  email.addEventListener("blur", validateEmail);
-  password.addEventListener("blur", validatePassword);
-  confirmPassword.addEventListener("blur", validateConfirmPassword);
+  username.addEventListener("blur", checkUsername);
+  email.addEventListener("blur", checkEmailField);
+  password.addEventListener("blur", checkPasswordField);
+  confirmPassword.addEventListener("blur", checkConfirmPasswordField);
 
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const validations = [
-      validateUsername(),
-      validateEmail(),
-      validatePassword(),
-      validateConfirmPassword(),
-    ];
+    const isUsernameValid = checkUsername();
+    const isEmailValid = checkEmailField();
+    const isPasswordValid = checkPasswordField();
+    const isConfirmPasswordValid = checkConfirmPasswordField();
 
-    const isFormValid = validations.every(Boolean);
-
-    if (isFormValid) {
+    if (
+      isUsernameValid &&
+      isEmailValid &&
+      isPasswordValid &&
+      isConfirmPasswordValid
+    ) {
       alert("Registration successful!");
-
       form.reset();
 
       document.querySelectorAll(".form-group").forEach((group) => {
         group.classList.remove("success", "error");
-
         const small = group.querySelector("small");
-        if (small) {
-          small.innerText = "";
-        }
+        if (small) small.innerText = "";
       });
     }
   });
 }
 
-function validateUsername() {
-  const value = username.value.trim();
+function showMessage(input, message, isValid) {
+  const formGroup = input.parentElement;
+  const small = formGroup.querySelector("small");
 
-  if (value === "") {
-    showError(username, "Username is required");
-    return false;
+  if (isValid === true) {
+    formGroup.classList.remove("error");
+    formGroup.classList.add("success");
+    if (small) small.innerText = "";
+  } else {
+    formGroup.classList.remove("success");
+    formGroup.classList.add("error");
+    if (small) small.innerText = message;
   }
-
-  return checkLength(username, 3, 15);
 }
 
-function validateEmail() {
-  const value = email.value.trim();
-
-  if (value === "") {
-    showError(email, "Email is required");
+function validateEmpty(input, fieldName) {
+  if (input.value.trim() === "") {
+    showMessage(input, `${fieldName} is required`, false);
     return false;
   }
-
-  return checkEmail(email);
-}
-
-function validatePassword() {
-  const value = password.value.trim();
-
-  if (value === "") {
-    showError(password, "Password is required");
-    return false;
-  }
-
-  return checkPasswordStrength(password);
-}
-
-function validateConfirmPassword() {
-  const value = confirmPassword.value.trim();
-
-  if (value === "") {
-    showError(confirmPassword, "Confirm password is required");
-    return false;
-  }
-
-  return checkPasswordsMatch(password, confirmPassword);
-}
-
-function checkPasswordsMatch(input1, input2) {
-  if (input1.value !== input2.value) {
-    showError(input2, "Passwords do not match");
-    return false;
-  }
-
-  showSuccess(input2);
   return true;
 }
 
-function checkEmail(input) {
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function checkUsername() {
+  if (!validateEmpty(username, "Username")) return false;
 
-  if (emailRegex.test(input.value.trim())) {
-    showSuccess(input);
-    return true;
+  const value = username.value.trim();
+  if (value.length < 3 || value.length > 15) {
+    showMessage(
+      username,
+      "Username must be between 3 and 15 characters",
+      false,
+    );
+    return false;
   }
 
-  showError(input, "Email is not valid");
-  return false;
+  showMessage(username, "", true);
+  return true;
 }
 
-function checkPasswordStrength(input) {
-  const value = input.value.trim();
+function checkEmailField() {
+  if (!validateEmpty(email, "Email")) return false;
 
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email.value.trim())) {
+    showMessage(email, "Email is not valid", false);
+    return false;
+  }
+
+  showMessage(email, "", true);
+  return true;
+}
+
+function checkPasswordField() {
+  if (!validateEmpty(password, "Password")) return false;
+
+  const value = password.value.trim();
   if (value.length < 6 || value.length > 25) {
-    showError(input, "Password must be between 6 and 25 characters");
+    showMessage(
+      password,
+      "Password must be between 6 and 25 characters",
+      false,
+    );
     return false;
   }
 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).+$/;
-
   if (!passwordRegex.test(value)) {
-    showError(
-      input,
-      "Password must contain at least one uppercase letter, one lowercase letter and one number",
+    showMessage(
+      password,
+      "Password must contain uppercase, lowercase and a number",
+      false,
     );
     return false;
   }
 
-  showSuccess(input);
+  showMessage(password, "", true);
   return true;
 }
 
-function checkLength(input, min, max) {
-  const length = input.value.trim().length;
+function checkConfirmPasswordField() {
+  if (!validateEmpty(confirmPassword, "Confirm password")) return false;
 
-  if (length < min) {
-    showError(
-      input,
-      `${formatFieldName(input)} must be at least ${min} characters.`,
-    );
+  if (password.value.trim() !== confirmPassword.value.trim()) {
+    showMessage(confirmPassword, "Passwords do not match", false);
     return false;
   }
 
-  if (length > max) {
-    showError(
-      input,
-      `${formatFieldName(input)} cannot exceed ${max} characters.`,
-    );
-    return false;
-  }
-
-  showSuccess(input);
+  showMessage(confirmPassword, "", true);
   return true;
-}
-
-function formatFieldName(input) {
-  if (input.id === "confirmPassword") {
-    return "Confirm password";
-  }
-
-  return input.id.charAt(0).toUpperCase() + input.id.slice(1);
-}
-
-function showError(input, message) {
-  const formGroup = input.parentElement;
-
-  formGroup.classList.remove("success");
-  formGroup.classList.add("error");
-
-  const small = formGroup.querySelector("small");
-
-  if (small) {
-    small.innerText = message;
-  }
-}
-
-function showSuccess(input) {
-  const formGroup = input.parentElement;
-
-  formGroup.classList.remove("error");
-  formGroup.classList.add("success");
-
-  const small = formGroup.querySelector("small");
-
-  if (small) {
-    small.innerText = "";
-  }
 }
