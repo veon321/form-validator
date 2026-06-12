@@ -18,6 +18,3 @@ This repository contains a dynamic, vanilla client-side form validation applicat
 - **Strict Required-Field Enforcement:** Intercepts the default `submit` event context to evaluate inputs using `.trim()` sanitation, preventing whitespace injection.
 - **Unified Messaging System:** Replaced separate error/success functions with a single `showMessage` handler that dynamically toggles element states.
 - **RegEx Character Sequence Evaluation:** Strictly validates email syntax and enforces strict password complexity (uppercase, lowercase, and numbers).
-- **Boundary Length Constraints:** Evaluates textual inputs against custom range-bound constraints to ensure data integrity.
-- **Password Alignment Synchronizer:** Executes cross-field value comparison to dynamically match password and confirmation tokens.
-- **Automated State Reset Strategy:** Upon successful submission, the program executes a native form reset and purges all transient visual modifier classes.
