@@ -17,17 +17,14 @@ if (elements.includes(null)) {
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
-    const isUsernameValid = checkUsername();
-    const isEmailValid = checkEmailField();
-    const isPasswordValid = checkPasswordField();
-    const isConfirmPasswordValid = checkConfirmPasswordField();
+    const validations = [
+      checkUsername(),
+      checkEmailField(),
+      checkPasswordField(),
+      checkConfirmPasswordField(),
+    ];
 
-    if (
-      isUsernameValid &&
-      isEmailValid &&
-      isPasswordValid &&
-      isConfirmPasswordValid
-    ) {
+    if (validations.every(Boolean)) {
       alert("Registration successful!");
       form.reset();
 
