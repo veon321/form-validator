@@ -7,7 +7,7 @@ const confirmPassword = document.getElementById("confirmPassword");
 const elements = [form, username, email, password, confirmPassword];
 
 if (elements.includes(null)) {
-  console.error("Brakuje wymaganych elementów formularza.");
+  console.error("missing elements in the form");
 } else {
   username.addEventListener("blur", checkUsername);
   email.addEventListener("blur", checkEmailField);
