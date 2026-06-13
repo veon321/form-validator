@@ -16,5 +16,4 @@ This repository contains a dynamic, vanilla client-side form validation applicat
 ## Features
 
 - **Strict Required-Field Enforcement:** Intercepts the default `submit` event context to evaluate inputs using `.trim()` sanitation, preventing whitespace injection.
-- **Unified Messaging System:** Replaced separate error/success functions with a single `showMessage` handler that dynamically toggles element states.
 - **RegEx Character Sequence Evaluation:** Strictly validates email syntax and enforces strict password complexity (uppercase, lowercase, and numbers).
