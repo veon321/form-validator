@@ -39,6 +39,12 @@ if (elements.includes(null)) {
 
 function showMessage(input, message, isValid) {
   const formGroup = input.parentElement;
+
+  if (!formGroup) {
+    console.error("Nie znaleziono rodzica dla elementu:", input);
+    return;
+  }
+
   const small = formGroup.querySelector("small");
 
   if (isValid === true) {
