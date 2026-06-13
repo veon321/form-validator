@@ -13,7 +13,6 @@ if (elements.includes(null)) {
   email.addEventListener("blur", checkEmailField);
   password.addEventListener("blur", checkPasswordField);
   confirmPassword.addEventListener("blur", checkConfirmPasswordField);
-
   form.addEventListener("submit", function (e) {
     e.preventDefault();
 
