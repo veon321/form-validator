@@ -12,8 +12,3 @@ This repository contains a dynamic, vanilla client-side form validation applicat
 
 - **Flexbox Layout:** Utilized as the primary positioning engine to guarantee optimal element centering and fluid alignment of error signals.
 - **Vanilla JavaScript (ES6+):** Refactored to use modular abstraction, reducing repetition through centralized validation logic and unified state management.
-
-## Features
-
-- **Strict Required-Field Enforcement:** Intercepts the default `submit` event context to evaluate inputs using `.trim()` sanitation, preventing whitespace injection.
-- **RegEx Character Sequence Evaluation:** Strictly validates email syntax and enforces strict password complexity (uppercase, lowercase, and numbers).
